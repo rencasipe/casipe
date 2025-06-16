@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-c+%n21l$65$&h1y14+*#zc58n&=0i(ghu*vxf(xm69h6)6wqa4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['wwww.casipe.net', 'casipe.net', '127.0.0.1']
 
 
 # Application definition
