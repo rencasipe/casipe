@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} | Casipe.net{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Breadcrumb Navigation -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-custom">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog Archive</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ post.title|truncatechars:40 }}
+          </li>
+        </ol>
+      </nav>
+    </div> 
+  </div>
+    
+  <div class="row">
+    <!-- Article Content -->
+      <div class="col-lg-10 mx-auto">
+        <article class="blog-content">
+          <h1 class="article-title mb-4" style="font-size: 2.5rem; font-weight: 700; color: #333; border-bottom: 3px solid var(--primary-color); padding-bottom: 0.5rem;">{{ post.title}}</h1>
+
+          <div class="article-meta mb-4">
+              <div class="author-info" style="display: flex; align-items: center;">
+                  <div class="author-details">
+                      <p class="mb-0" style="font-size: 0.9rem; font-weight: 500;">Written by</p>
+                      <p class="mb-0" style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color);">{{ post.author}}</p>
+                  </div>
+              </div>
+              
+              <div class="post-dates mt-3">
+                  <div class="date-info">
+                      <span class="date-label"><i class="fas fa-calendar-check me-2"></i>Published:</span>
+                      <span class="date-value">{{ post.published_date|date:"F d, Y" }}</span>
+                  </div>
+                  <div class="date-info mt-1">
+                      <span class="date-label"><i class="fas fa-edit me-2"></i>Last Updated:</span>
+                      <span class="date-value">{{ post.updated_at|date:"F d, Y" }}</span>
+                  </div>
+              </div>
+          </div>
+                
+          <div class="post-content">
+              {{ post.content|safe }}
+          </div>
+      </article>
+            
+      <div class="back-button-container mt-4 mb-4">
+          <a href="{% url 'blog' %}" class="btn btn-submit back-btn">
+              <i class="fas fa-arrow-left me-2"></i> Back to Blog Archive
+          </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    /* Custom Breadcrumb Styling */
+    .breadcrumb-custom {
+        padding: 0.75rem 0;
+        margin-bottom: 1rem;
+        background-color: transparent;
+        font-size: 0.9rem;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        color: var(--monokai-text);
+        font-size: 1.2rem;
+        line-height: 1;
+        vertical-align: middle;
+        padding: 0 0.5rem;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item a {
+        color: var(--monokai-green);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item a:hover {
+        color: var(--monokai-yellow);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item.active {
+        color: var(--monokai-text);
+    }
+    
+    /* Post Meta Section */
+    .article-meta {
+        background-color: #f8f9fa;
+        padding: 1.25rem;
+        border-radius: 10px;
+        border-left: 4px solid var(--primary-color);
+    }
+    
+    .post-dates {
+        margin-top: 15px;
+        font-size: 0.95rem;
+    }
+    
+    .date-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .date-label {
+        color: #666;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        min-width: 110px;
+    }
+    
+    .date-value {
+        color: #333;
+        font-weight: 600;
+    }
+    
+    /* Post Footer Section */
+    .post-footer {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .back-button-container {
+        text-align: left;
+    }
+    
+    /* Back button specific styling */
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 45px;
+    }
+    
+    @media (max-width: 767px) {
+        .back-button-container {
+            text-align: center;
+        }
+        
+        .article-meta {
+            padding: 1rem;
+        }
+        
+        .date-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 3px;
+        }
+        
+        .date-label {
+            min-width: auto;
+            margin-right: 5px;
+        }
+    }
+    
+    /* Author Section */
+    .author-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .author-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--monokai-green);
+        color: var(--monokai-dark);
+        border-radius: 50%;
+    }
+</style>
+{% endblock content %}

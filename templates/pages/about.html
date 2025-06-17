@@ -1,0 +1,202 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}About Me{% endblock title%} 
+{% block content %}
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container text-center">
+        <h1 class="page-title">About Me</h1>
+        <div class="spanish-flag-colors"></div>
+        <p class="lead">My Language Learning Journey: Exploring Cultures Through Words
+
+</p>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <img src="{% static 'img/about-me.jpg' %}" alt="Profile Photo" class="img-fluid about-img" onerror="this.src='https://images.unsplash.com/photo-1513001900722-370f803f498d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'">
+            </div>
+            <div class="col-lg-7">
+                <h2>Hi everyone!</h2>
+<p class="mb-4">I'm on an exciting mission: to become fluent in Spanish. Growing up in the Philippines, I'm proficient in <strong>Tagalog and English</strong> (the Philippines' official languages), and I'm now enthusiastically tackling my third language.</p>
+
+<p>My interest in Spanish truly blossomed when I started learning about the incredible <strong>historical connections between the Philippines and Spain</strong>. The more I discovered about these shared cultural roots, the more I yearned to understand the language that profoundly influenced Filipino culture.</p>
+
+<p>My own name, Renato Casipe, directly reflects this history. My first name, Renato, is almost certainly of Spanish origin, meaning "reborn," and its common use in the Philippines strongly indicates the Spanish introduction of Catholicism and its naming traditions during the colonial era. As for Casipe, its spelling with a 'C' is characteristic of how many indigenous or pre-existing names were Hispanized during the Spanish colonial period, when the 'k' sound in native words was typically written with a 'C' by the Spanish.</p>
+
+<p>This space is dedicated to charting my progress as I learn Spanish, openly sharing my experiences. I believe in the power of shared learning, and I'm eager to connect with other language enthusiasts who know that mastering a new language is as much about consistent effort as it is about innate ability.</p>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'contact' %}" class="btn btn-hero-primary">Get In Touch</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="content-card">
+                    <h3 class="text-center mb-4">My Language Story</h3>
+                    
+                    <div class="language-timeline mb-5">
+                        <div class="timeline-item">
+                            <h4>Tagalog 🇵🇭</h4>
+                            <p>My mother tongue and the language of my childhood. Growing up in the Philippines, Tagalog was the foundation of my identity and cultural understanding.</p>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 100%"></div>
+                            </div>
+                            <p class="text-end"><small>Native Speaker</small></p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <h4>English 🇺🇸</h4>
+                            <p>Learned simultaneously with Tagalog through school and media. English opened doors to global communication and eventually became a cornerstone of my professional life.</p>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 100%"></div>
+                            </div>
+                            <p class="text-end"><small>Native Speaker</small></p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <h4>Spanish 🇪🇸</h4>
+                            <p>My current challenge is learning Spanish, inspired by the linguistic connections to my Filipino heritage and a desire to connect with Spanish-speaking communities worldwide.</p>
+                            <div class="d-flex align-items-center mt-3">
+                                <span class="badge bg-primary rounded-pill me-2"><i class="fas fa-graduation-cap"></i></span>
+                                <p class="mb-0">Actively learning and practicing — I'm not interested in formal level tracking</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="language-insights mt-5">
+                        <h4 class="text-center mb-4">Interesting Connections I've Discovered Between Tagalog and Spanish</h4>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-lightbulb text-warning me-2"></i> Shared Vocabulary</h5>
+                                    <p class="mb-0">Tagalog has thousands of Spanish loanwords: <em>ventana</em> (window) became <em>bintana</em>, <em>mesa</em> (table) stayed as <em>mesa</em>, and <em>tenedor</em> (fork) became <em>tinidor</em>.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-calendar-alt text-primary me-2"></i> Days of the Week</h5>
+                                    <p class="mb-0">In Tagalog, days like <em>Lunes</em>, <em>Martes</em>, <em>Miyerkules</em> come directly from Spanish <em>Lunes</em>, <em>Martes</em>, <em>Miércoles</em>.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-music text-danger me-2"></i> Musical Influences</h5>
+                                    <p class="mb-0">Traditional Filipino music like the <em>Harana</em> (serenade) has clear Spanish influences, making Spanish songs feel strangely familiar.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-utensils text-success me-2"></i> Culinary Crossovers</h5>
+                                    <p class="mb-0">Filipino dishes like <em>leche flan</em>, <em>embutido</em>, and <em>menudo</em> reveal Spain's lasting impact on Philippine cuisine.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="language-insights mt-5">
+                        <h4 class="text-center mb-4">Interesting Connections I've Discovered Between English and Spanish</h4>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-lightbulb text-warning me-2"></i> Cognates</h5>
+                                    <p class="mb-0">Many English and Spanish words share Latin roots: <em>important/importante</em>, <em>animal/animal</em>, <em>intelligent/inteligente</em> making vocabulary acquisition easier.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-language text-primary me-2"></i> False Friends</h5>
+                                    <p class="mb-0">Words that look similar but have different meanings: <em>actual</em> (Spanish: current) vs. <em>actual</em> (English: real), <em>embarazada</em> (pregnant) vs. <em>embarrassed</em>.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-exchange-alt text-danger me-2"></i> Grammar Differences</h5>
+                                    <p class="mb-0">Spanish uses gendered nouns and adjective agreement unlike English, but both languages share similar sentence structures (subject-verb-object).</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="insight-card p-3 border rounded">
+                                    <h5><i class="fas fa-history text-success me-2"></i> Historical Influences</h5>
+                                    <p class="mb-0">Both languages have influenced each other: English absorbed Spanish words like <em>patio</em>, <em>tornado</em>, and <em>mosquito</em>, while Spanish adopted English terms like <em>fútbol</em> and <em>computadora</em>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Learning Philosophy Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-4">My Language Learning Philosophy</h2>
+                <p class="lead mb-5">Learning a new language as an adult is challenging but incredibly rewarding. Here's how I approach it:</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="content-card text-center h-100">
+                    <div class="app-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h4>Consistency Over Intensity</h4>
+                    <p>I'd rather study 20 minutes daily than 3 hours once a week. Small, regular efforts compound over time.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="content-card text-center h-100">
+                    <div class="app-icon">
+                        <i class="fas fa-headphones-alt"></i>
+                    </div>
+                    <h4>Immersion Whenever Possible</h4>
+                    <p>I surround myself with Spanish through podcasts, music, Netflix shows, and label items around my home.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="content-card text-center h-100">
+                    <div class="app-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h4>Embrace Mistakes</h4>
+                    <p>I prioritize communication over perfection. Every mistake is a stepping stone to fluency.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="content-card text-center h-100">
+                    <div class="app-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h4>Cultural Connection</h4>
+                    <p>Language is inseparable from culture. I learn about Spanish-speaking countries' customs, history, and traditions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
