@@ -1,0 +1,415 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block title %}Spanish Learning Blog | Casipe.net{% endblock %}
+
+{% block content %}
+<!-- Page Header --> 
+<section class="page-header"> 
+    <div class="container text-center"> 
+        <h1 class="page-title">The Spanish Learner's Blog</h1> 
+        <div class="spanish-flag-colors"></div> 
+        <p class="lead">Chronicles of my Spanish learning journey: vocabulary tips, grammar insights, and cultural discoveries</p> 
+    </div> 
+</section> 
+
+<!-- Main Content --> 
+<section class="section-padding"> 
+    <div class="container"> 
+        <!-- Search and Filter Section - Centered --> 
+        <div class="row mb-5"> 
+            <div class="col-lg-8 col-md-10 mx-auto"> 
+                <form action="{% url 'search_posts' %}" method="GET" class="search-form"> 
+                    <div class="input-group search-wrapper"> 
+                        <input type="text" name="q" class="form-control search-input" placeholder="Search for vocabulary, grammar tips..." value="{{ search_query }}"> 
+                        <button type="submit" class="btn btn-submit search-btn"> 
+                            <i class="fas fa-search"></i> 
+                        </button> 
+                    </div> 
+                </form> 
+            </div> 
+        </div>
+
+        <!-- Blog Posts Grid -->
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <article class="blog-card h-100">
+                    <div class="card-content">
+                        {% if post.tags.first %}
+                        <span class="blog-tag">{{ post.tags.first.name }}</span>
+                        {% endif %}
+                        
+                        <h3 class="card-title">
+                            <a href="{% url 'post_page' post.slug %}">{{ post.title }}</a>
+                        </h3>
+                        <p class="card-text">
+                            {{ post.content|striptags|truncatechars:120 }}
+                        </p>
+                        
+                        <div class="card-meta">
+                            <div class="meta-author">
+                                <div class="avatar-circle">
+                                    {% if post.author and post.author.profile_image %}
+                                    <img src="{{ post.author.profile_image.url }}" alt="{{ post.author.nickname }}">
+                                    {% else %}
+                                    <span>{{ post.author.nickname|default:"Me"|slice:":1" }}</span>
+                                    {% endif %}
+                                </div>
+                                <span class="author-name">
+                                    {{ post.author.nickname|default:"Casipe" }}
+                                </span>
+                            </div>
+                            <div class="meta-dates">
+                                <div class="meta-date">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Published: {{ post.published_date|date:"M d, Y" }}</span>
+                                </div>
+                                <div class="meta-date">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Updated: {{ post.updated_at|date:"M d, Y" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="{% url 'post_page' post.slug %}" class="card-link">Read More</a>
+                    </div>
+                </article>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="content-card">
+                    <i class="fas fa-book-reader mb-3" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h3>No posts found</h3>
+                    <p>Try a different search term or check back later for new Spanish learning content.</p>
+                    <p class="mt-3">
+                        <a href="{% url 'blog' %}" class="btn btn-hero-primary">View All Posts</a>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if posts.paginator.num_pages > 1 %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <nav aria-label="Blog pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if posts.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ posts.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Previous">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="fas fa-chevron-left"></i></span>
+                        </li>
+                        {% endif %}
+
+                        {% for i in posts.paginator.page_range %}
+                        {% if posts.number == i %}
+                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                        {% elif i > posts.number|add:'-3' and i < posts.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}">{{ i }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if posts.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ posts.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Next">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="fas fa-chevron-right"></i></span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section> 
+
+
+<!-- Additional CSS --> 
+<style> 
+/* Blog specific styles */ 
+.blog-card { 
+    position: relative; 
+    border: none; 
+    border-radius: 16px; 
+    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07); 
+    transition: all 0.3s ease; 
+    background: white; 
+    padding: 0; 
+} 
+
+.blog-card:hover { 
+    transform: translateY(-8px); 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); 
+} 
+
+.card-content { 
+    padding: 2rem; 
+    position: relative; 
+} 
+
+.card-icon { 
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50%; 
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); 
+    color: white; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 1.5rem; 
+    margin-bottom: 1.5rem; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+} 
+
+.blog-tag { 
+    position: absolute; 
+    top: 1.5rem; 
+    right: 1.5rem; 
+    background-color: rgba(var(--secondary-color-rgb), 0.1); 
+    color: var(--secondary-color); 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    padding: 5px 15px; 
+    border-radius: 20px; 
+    display: inline-block; 
+} 
+
+.card-title { 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    margin-bottom: 1rem; 
+    color: var(--dark-color); 
+    line-height: 1.4; 
+} 
+
+.card-title a { 
+    color: inherit; 
+    text-decoration: none; 
+    transition: color 0.2s ease; 
+} 
+
+.card-title a:hover { 
+    color: var(--primary-color); 
+} 
+
+.card-text { 
+    color: var(--gray-color); 
+    font-size: 0.95rem; 
+    line-height: 1.6; 
+    margin-bottom: 1.5rem; 
+} 
+
+.card-meta { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    margin-bottom: 1.5rem; 
+    padding-top: 1rem; 
+    border-top: 1px solid rgba(0, 0, 0, 0.05); 
+} 
+
+.meta-author { 
+    display: flex; 
+    align-items: center; 
+} 
+
+.avatar-circle { 
+    width: 35px; 
+    height: 35px; 
+    border-radius: 50%; 
+    background-color: var(--primary-color); 
+    color: white; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: bold; 
+    font-size: 0.9rem; 
+    overflow: hidden; 
+    margin-right: 10px; 
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); 
+} 
+
+.avatar-circle img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+} 
+
+.author-name { 
+    font-size: 0.9rem; 
+    font-weight: 500; 
+    color: var(--dark-color); 
+} 
+
+.meta-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.meta-date { 
+    font-size: 0.85rem; 
+    color: var(--gray-color); 
+    display: flex; 
+    align-items: center; 
+} 
+
+.meta-date i { 
+    margin-right: 5px; 
+    font-size: 0.9rem; 
+} 
+
+.card-link { 
+    display: inline-block; 
+    color: var(--primary-color); 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    text-decoration: none; 
+    position: relative; 
+    padding-bottom: 2px; 
+    transition: all 0.3s ease; 
+} 
+
+.card-link::after { 
+    content: ''; 
+    position: absolute; 
+    width: 0; 
+    height: 2px; 
+    bottom: 0; 
+    left: 0; 
+    background-color: var(--primary-color); 
+    transition: width 0.3s ease; 
+} 
+
+.card-link:hover::after { 
+    width: 100%; 
+} 
+
+.btn-category { 
+    background-color: white; 
+    color: var(--dark-color); 
+    border-radius: 30px; 
+    padding: 8px 16px; 
+    margin-right: 10px; 
+    font-size: 0.9rem; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); 
+    border: 1px solid rgba(0, 0, 0, 0.05); 
+} 
+
+.btn-category:hover { 
+    background-color: var(--primary-color); 
+    color: white; 
+    transform: translateY(-3px); 
+} 
+
+.category-buttons { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 10px; 
+} 
+
+/* Search form specific styles */
+.search-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-wrapper {
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.search-input {
+    border: none;
+    padding: 15px 20px;
+    height: auto;
+    font-size: 1rem;
+}
+
+.search-input:focus {
+    box-shadow: none;
+}
+
+.search-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0 25px;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Additional responsive adjustments */ 
+@media (max-width: 768px) { 
+    .card-content { 
+        padding: 1.5rem; 
+    } 
+    
+    .blog-tag { 
+        top: 1rem; 
+        right: 1rem; 
+    } 
+    
+    .card-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .meta-dates {
+        margin-top: 10px;
+    }
+    
+    .search-input {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .card-text {
+        font-size: 0.9rem;
+    }
+    
+    .blog-card {
+        border-radius: 12px;
+    }
+    
+    .card-content {
+        padding: 1.25rem;
+    }
+    
+    .subscribe-title {
+        font-size: 1.5rem;
+    }
+    
+    .subscribe-text {
+        font-size: 0.9rem;
+    }
+}
+</style>
+{% endblock %}
