@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'pages.apps.PagesConfig',
     'blog.apps.BlogConfig',
+    'temario.apps.TemarioConfig',
+    'apps.apps.AppsConfig',
+    'readers.apps.ReadersConfig',
 ]
 
 MIDDLEWARE = [

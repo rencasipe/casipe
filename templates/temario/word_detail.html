@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ word }} - Temario{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-2">{{ word }}</h1>
+            <p class="text-muted">
+                {% if word.has_gender %}
+                    <span class="badge bg-info">{{ word.get_gender_display }}</span>
+                {% endif %}
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="{% url 'temario:index' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Word List
+            </a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            {% for meaning in meanings %}
+                <div class="mb-4">
+                    <h4 class="text-primary mb-3">{{ meaning.thematic_category.name }} Meaning</h4>
+                    <p>{{ meaning.definition }}</p>
+                    
+                    {% if meaning.example_sentences.all %}
+                        <h5 class="mt-4 mb-3">Examples</h5>
+                        {% for example in meaning.example_sentences.all %}
+                            <div class="card mb-3 border-light">
+                                <div class="card-body">
+                                    <p class="fst-italic mb-1">{{ example.text }}</p>
+                                    {% if example.translation %}
+                                        <p class="text-muted">{{ example.translation }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                {% if not forloop.last %}
+                    <hr class="my-4">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Related Categories</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for meaning in meanings %}
+                    <div class="col-md-4 mb-3">
+                        <a href="{% url 'temario:category_detail' meaning.thematic_category.id %}" class="text-decoration-none">
+                            <div class="card hover-card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ meaning.thematic_category.name }}</h5>
+                                    <p class="card-text small text-muted">
+                                        {{ meaning.thematic_category.description|truncatechars:100 }}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

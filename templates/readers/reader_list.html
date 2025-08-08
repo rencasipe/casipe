@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse Spanish Graded Readers{% endblock %}
+
+{% block content %}
+<div class="page-header text-center">
+    <div class="container">
+        <div class="spanish-flag-colors"></div>
+        <h1 class="page-title display-4">Spanish Graded Readers</h1>
+        <p class="lead text-white">Improve your Spanish through engaging stories tailored to your level</p>
+    </div>
+</div>
+
+<div class="section-padding">
+    <div class="container">
+        <!-- Search and Filter Section -->
+        <div class="content-card mb-5">
+            <div class="row">
+                <div class="col-lg-9 mx-auto">
+                    <form method="get" action="{% url 'readers:reader_list' %}" class="reader-search-form">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" name="search" class="form-control border-start-0" 
+                                        placeholder="Search by title, author, or content..." 
+                                        value="{{ search_query }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="level" class="form-select">
+                                    <option value="">All Levels</option>
+                                    {% for level in difficulty_levels %}
+                                        <option value="{{ level.level_number }}" {% if level_filter == level.level_number|stringformat:"i" %}selected{% endif %}>
+                                            {{ level.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex gap-2">
+                                <button type="submit" class="btn btn-submit flex-grow-1">
+                                    <i class="fas fa-filter me-2"></i> Apply
+                                </button>
+                                {% if search_query or level_filter %}
+                                    <a href="{% url 'readers:reader_list' %}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reader Cards Section -->
+        {% if readers %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for reader in readers %}
+                    <div class="col">
+                        <div class="content-card h-100 p-0 overflow-hidden">
+                            <div class="position-relative">
+                                {% if reader.cover_image %}
+                                    <img src="{{ reader.cover_image.url }}" class="w-100" alt="{{ reader.title }}" style="height: 220px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-light text-center py-5" style="height: 220px;">
+                                        <span class="display-1 text-muted">📚</span>
+                                    </div>
+                                {% endif %}
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span class="badge rounded-pill" 
+                                          style="background-color: {% if reader.difficulty_level.level_number == 1 %}#4CAF50{% elif reader.difficulty_level.level_number == 2 %}#2196F3{% elif reader.difficulty_level.level_number == 3 %}#FF9800{% elif reader.difficulty_level.level_number == 4 %}#F44336{% else %}#9C27B0{% endif %}; 
+                                          padding: 8px 15px; font-weight: 600; font-size: 0.85rem;">
+                                        {{ reader.difficulty_level.name }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="card-title fw-bold mb-2">{{ reader.title }}</h4>
+                                <p class="text-muted mb-3"><i class="fas fa-user-edit me-2"></i>{{ reader.author }}</p>
+                                <p class="card-text mb-4">{{ reader.description|truncatewords:25 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-book-open me-2 text-primary"></i>
+                                        <span>{{ reader.word_count }} words</span>
+                                    </div>
+                                    <a href="{% url 'readers:reader_detail' reader.id %}" class="app-btn">
+                                        Read Now <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="content-card text-center py-5">
+                {% if search_query or level_filter %}
+                    <div class="emoji">🔍</div>
+                    <h3>No matching readers found</h3>
+                    <p class="text-muted">Try adjusting your search criteria or explore all readers.</p>
+                    <a href="{% url 'readers:reader_list' %}" class="btn btn-hero-primary mt-3">
+                        <i class="fas fa-book me-2"></i> View All Readers
+                    </a>
+                {% else %}
+                    <div class="emoji">📚</div>
+                    <h3>No readers available yet</h3>
+                    <p class="text-muted">Check back soon for new content!</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Additional Reader Metrics Section (Optional) -->
+{% if readers %}
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="content-card">
+                    <div class="app-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="mb-3">{{ readers.count }}</h3>
+                    <p class="text-muted mb-0">Available Stories</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="content-card">
+                    <div class="app-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="mb-3">{{ difficulty_levels|length }}</h3>
+                    <p class="text-muted mb-0">Difficulty Levels</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="content-card">
+                    <div class="app-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="mb-3">Learn Naturally</h3>
+                    <p class="text-muted mb-0">Progress at your own pace</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add smooth hover effects for reader cards
+    document.addEventListener('DOMContentLoaded', function() {
+        const readerCards = document.querySelectorAll('.content-card');
+        readerCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+                this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.1)';
+                this.style.transition = 'all 0.3s ease';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
+    });
+</script>
+{% endblock %}

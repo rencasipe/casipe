@@ -15,6 +15,7 @@ urlpatterns = [
     
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
+    path("apps/", include("apps.urls")),    
 ]
 
 if settings.DEBUG:

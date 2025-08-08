@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ reader.title }} | Spanish Readers{% endblock %}
+
+{% block content %}
+<!-- Premium Reader Header -->
+<div class="page-header text-center mb-0" style="{% if reader.cover_image %}background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ reader.cover_image.url }}'); background-size: cover; background-position: center;{% endif %}">
+    <div class="container">
+        <div class="spanish-flag-colors"></div>
+        <span class="badge rounded-pill mb-3" 
+              style="background-color: {% if reader.difficulty_level.level_number == 1 %}#4CAF50{% elif reader.difficulty_level.level_number == 2 %}#2196F3{% elif reader.difficulty_level.level_number == 3 %}#FF9800{% elif reader.difficulty_level.level_number == 4 %}#F44336{% else %}#9C27B0{% endif %}; 
+              padding: 10px 20px; font-weight: 600; font-size: 0.9rem;">
+            {{ reader.difficulty_level.name }}
+        </span>
+        <h1 class="page-title display-4">{{ reader.title }}</h1>
+        <p class="lead text-white mb-2">by {{ reader.author }}</p>
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-4">
+            <ol class="breadcrumb bg-transparent mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'readers:reader_list' %}" class="text-white">All Readers</a></li>
+                <li class="breadcrumb-item active text-white-50" aria-current="page">{{ reader.title }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="section-padding">
+    <div class="container">
+        <div class="row">
+            <!-- Left Column: Cover and Details -->
+            <div class="col-lg-4 mb-4">
+                <div class="content-card h-100">
+                    <!-- Cover Image -->
+                    <div class="text-center mb-4">
+                        {% if reader.cover_image %}
+                            <img src="{{ reader.cover_image.url }}" class="img-fluid rounded shadow-sm" alt="{{ reader.title }}" style="max-height: 350px;">
+                        {% else %}
+                            <div class="bg-light rounded py-5">
+                                <span class="display-1 text-muted">📚</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Reader Details -->
+                    <div class="mb-4">
+                        <h4 class="border-bottom pb-2 mb-3"><i class="fas fa-info-circle me-2 text-primary"></i>Reader Details</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <span><i class="fas fa-signal me-2 text-muted"></i>Difficulty</span>
+                                <span class="badge rounded-pill" 
+                                      style="background-color: {% if reader.difficulty_level.level_number == 1 %}#4CAF50{% elif reader.difficulty_level.level_number == 2 %}#2196F3{% elif reader.difficulty_level.level_number == 3 %}#FF9800{% elif reader.difficulty_level.level_number == 4 %}#F44336{% else %}#9C27B0{% endif %};">
+                                    {{ reader.difficulty_level.name }}
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <span><i class="fas fa-book-open me-2 text-muted"></i>Word Count</span>
+                                <span class="fw-bold">{{ reader.word_count }} words</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <span><i class="fas fa-calendar-alt me-2 text-muted"></i>Published</span>
+                                <span>{{ reader.publication_date }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Language Focus -->
+                    <div>
+                        <h4 class="border-bottom pb-2 mb-3"><i class="fas fa-language me-2 text-primary"></i>Language Focus</h4>
+                        {% if reader.vocabulary_focus %}
+                            <div class="mb-3">
+                                <h6 class="text-primary mb-2"><i class="fas fa-align-left me-2"></i>Vocabulary</h6>
+                                <p class="text-muted">{{ reader.vocabulary_focus }}</p>
+                            </div>
+                        {% endif %}
+                        {% if reader.grammar_focus %}
+                            <div>
+                                <h6 class="text-primary mb-2"><i class="fas fa-paragraph me-2"></i>Grammar</h6>
+                                <p class="text-muted">{{ reader.grammar_focus }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Description and Content -->
+            <div class="col-lg-8">
+                <!-- Description Section -->
+                <div class="content-card mb-4">
+                    <h3 class="border-bottom pb-3 mb-4"><i class="fas fa-feather-alt me-2 text-primary"></i>Description</h3>
+                    <div class="mb-0">
+                        {{ reader.description|linebreaks }}
+                    </div>
+                </div>
+                
+                <!-- Reader Content Section -->
+                <div class="content-card mb-5">
+                    <h3 class="border-bottom pb-3 mb-4">
+                        <i class="fas fa-book me-2 text-primary"></i>Reader Content
+                    </h3>
+                    <div class="reader-content">
+    {{ reader.content|safe }}
+</div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Section - Audio, Text Size, etc. -->
+        <!--<div class="row mb-5">-->
+            <!--<div class="col-12">-->
+                <!--<div class="content-card">-->
+                    <!--<div class="d-flex flex-wrap justify-content-between align-items-center">-->
+                        <!--<div class="d-flex align-items-center mb-3 mb-md-0">-->
+                            <!--<span class="me-3 text-muted">Text Size:</span>-->
+                            <!--<div class="btn-group" role="group">-->
+                                <!--<button type="button" class="btn btn-outline-secondary" id="decrease-text">-->
+                                    <!--<i class="fas fa-font fa-xs"></i>-->
+                                <!--</button>-->
+                                <!--<button type="button" class="btn btn-outline-secondary" id="reset-text">-->
+                                    <!--<i class="fas fa-font"></i>-->
+                                <!--</button>-->
+                                <!--<button type="button" class="btn btn-outline-secondary" id="increase-text">-->
+                                    <!--<i class="fas fa-font fa-lg"></i>-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        
+                        <!--<!--<div class="d-flex align-items-center">-->
+                            <!--<!--<button class="app-btn me-2">-->
+                                <!--<!--<i class="fas fa-bookmark me-2"></i>Save-->
+                            <!--<!--</button>-->
+                            <!--<!--<button class="btn-hero-primary">-->
+                                <!--<!--<i class="fas fa-print me-2"></i>Print Version-->
+                            <!--<!--</button>-->
+                        <!--<!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!-- Related Readers Section -->
+        {% if related_readers %}
+            <div class="mt-5">
+                <h3 class="mb-4 text-center">
+                    <span class="badge" 
+                          style="background-color: {% if reader.difficulty_level.level_number == 1 %}#4CAF50{% elif reader.difficulty_level.level_number == 2 %}#2196F3{% elif reader.difficulty_level.level_number == 3 %}#FF9800{% elif reader.difficulty_level.level_number == 4 %}#F44336{% else %}#9C27B0{% endif %}; 
+                          padding: 8px 15px; font-weight: 600; font-size: 0.9rem; vertical-align: middle;">
+                        {{ reader.difficulty_level.name }}
+                    </span>
+                    <span class="ms-2">More Stories at This Level</span>
+                </h3>
+                
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for related in related_readers %}
+                        <div class="col">
+                            <div class="content-card h-100 p-0 overflow-hidden">
+                                <div class="position-relative">
+                                    {% if related.cover_image %}
+                                        <img src="{{ related.cover_image.url }}" class="w-100" alt="{{ related.title }}" style="height: 180px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="bg-light text-center py-4" style="height: 180px;">
+                                            <span class="h1 text-muted">📚</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="p-3">
+                                    <h5 class="card-title fw-bold mb-2">{{ related.title }}</h5>
+                                    <p class="card-text small text-muted mb-3">{{ related.description|truncatewords:15 }}</p>
+                                    <a href="{% url 'readers:reader_detail' related.id %}" class="app-btn btn-sm">
+                                        Read Story <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Text size adjustment functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const readerContent = document.querySelector('.reader-content');
+        let currentSize = 1.1; // Starting font size in rem
+        
+        document.getElementById('increase-text').addEventListener('click', function() {
+            if (currentSize < 1.8) {
+                currentSize += 0.1;
+                readerContent.style.fontSize = `${currentSize}rem`;
+            }
+        });
+        
+        document.getElementById('decrease-text').addEventListener('click', function() {
+            if (currentSize > 0.8) {
+                currentSize -= 0.1;
+                readerContent.style.fontSize = `${currentSize}rem`;
+            }
+        });
+        
+        document.getElementById('reset-text').addEventListener('click', function() {
+            currentSize = 1.1;
+            readerContent.style.fontSize = `${currentSize}rem`;
+        });
+        
+        // Add smooth hover effects for cards
+        const contentCards = document.querySelectorAll('.content-card');
+        contentCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('h-100') || this.parentNode.classList.contains('col')) {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.1)';
+                    this.style.transition = 'all 0.3s ease';
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
+    });
+</script>
+{% endblock %}

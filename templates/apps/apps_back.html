@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <meta name="description" content="Explore Spanish learning tools and resources created by Renato Casipe to enhance your language learning journey effectively and enjoyably." />
+{% endblock meta %}
+{% block title %}Spanish Learning Apps & Resources | Casipe.net{% endblock title%}
+{% block content %}
+
+<!-- Page Header -->
+<header class="page-header">
+    <div class="container text-center">
+        <div class="emoji">🛠️ 🇪🇸</div>
+        <h1 class="display-4 page-title">Spanish Learning Resources</h1>
+        <div class="spanish-flag-colors"></div>
+        <p class="lead">Tools and apps I've created to make learning Spanish more effective and enjoyable</p>
+    </div>
+</header>
+
+<!-- Apps Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <!-- Temario App Card -->
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="content-card h-100">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-th-list app-icon"></i>
+                    </div>
+                    <h3 class="text-center mb-3">Temario</h3>
+                    <p>A thematic Spanish vocabulary app that organizes words by topic to help you build your vocabulary efficiently.</p>
+                    
+                    <h5 class="mt-4">Key Features:</h5>
+                    <ul>
+                        <li>Organized vocabulary by themes</li>
+                        <li>Audio pronunciation</li>
+                        <li>Spaced repetition learning</li>
+                        <li>Progress tracking</li>
+                    </ul>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'temario:index' %}" class="btn app-btn">
+                            <i class="fas fa-external-link-alt me-2"></i>Open App
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VerbMaster App Card -->
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="content-card h-100">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-sync-alt app-icon"></i>
+                    </div>
+                    <h3 class="text-center mb-3">VerbMaster</h3>
+                    <div class="badge bg-warning text-dark mb-3 d-block w-100 py-2">Coming Soon</div>
+                    <p>Master Spanish verb conjugations with interactive exercises and personalized learning paths.</p>
+                    
+                    <h5 class="mt-4">Key Features:</h5>
+                    <ul>
+                        <li>Complete conjugation tables</li>
+                        <li>Practice quizzes</li>
+                        <li>Irregular verb focus</li>
+                        <li>Progress tracking</li>
+                    </ul>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn app-btn" disabled>
+                            <i class="fas fa-hourglass-half me-2"></i>Coming Soon
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SpanishPal App Card -->
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="content-card h-100">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-comments app-icon"></i>
+                    </div>
+                    <h3 class="text-center mb-3">SpanishPal</h3>
+                    <div class="badge bg-secondary mb-3 d-block w-100 py-2">In Development</div>
+                    <p>Practice Spanish conversations with AI-powered chat scenarios based on real-life situations.</p>
+                    
+                    <h5 class="mt-4">Key Features:</h5>
+                    <ul>
+                        <li>Role-playing scenarios</li>
+                        <li>Vocabulary suggestions</li>
+                        <li>Grammar correction</li>
+                        <li>Difficulty levels</li>
+                    </ul>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn app-btn" disabled>
+                            <i class="fas fa-hourglass-half me-2"></i>In Development
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Subscribe Section -->
+<section class="subscribe-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="subscribe-title">Want to know when new apps are released?</h2>
+                <p class="subscribe-text">Sign up for updates and be the first to know about new learning tools and resources.</p>
+                
+                <div id="newsletter-container" class="subscribe-form">
+                    <form id="newsletter-form" action="" method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <input type="email" name="email" class="form-control" placeholder="Your email address" required>
+                                <div id="newsletter-error" class="text-danger mt-2 text-start"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-submit w-100">Subscribe</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="subscription-success" class="alert alert-success mt-4" style="display: none;">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span id="success-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('newsletter-form');
+        const errorDiv = document.getElementById('newsletter-error');
+        const successDiv = document.getElementById('subscription-success');
+        const successMessage = document.getElementById('success-message');
+        const container = document.getElementById('newsletter-container');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorDiv.innerHTML = '';
+            
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Show success message
+                    container.style.display = 'none';
+                    successDiv.style.display = 'block';
+                    successMessage.textContent = data.message;
+                } else {
+                    // Parse and display errors
+                    const errors = JSON.parse(data.errors);
+                    if (errors.email) {
+                        errorDiv.textContent = errors.email[0].message;
+                    }
+                }
+            })
+            .catch(error => {
+                errorDiv.textContent = 'An unexpected error occurred. Please try again.';
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
+{% endblock extra_js %}

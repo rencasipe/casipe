@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}Temario - Thematic Vocabulary Explorer{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-3">Temario</h1>
+            <p class="lead text-muted">Explore thematic vocabulary and terminology</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="{% url 'apps' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Apps
+            </a>
+        </div>
+    </div>
+
+    <!-- Search and filters -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search words..." 
+                               value="{{ request.GET.search|default:'' }}">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}" {% if request.GET.category == category %}selected{% endif %}>
+                                {{ category|title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-1 text-end">
+                    <a href="{% url 'temario:index' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if words %}
+        <div class="row">
+            {% for word in words %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <div class="card-body">
+                            <h5 class="card-title d-flex justify-content-between">
+                                {{ word.text }}
+                                {% if word.category %}
+                                    <span class="badge bg-secondary">
+                                        {{ word.category.name|title }}
+                                    </span>
+                                {% endif %}
+                            </h5>
+                            <p class="card-text">{{ word.definition }}</p>
+                            
+                            {% with examples=word.example_sentences.all|slice:":3" %}
+                                {% if examples %}
+                                    <div class="mt-3">
+                                        <small class="text-muted">Examples:</small>
+                                        {% for example in examples %}
+                                            <div class="mt-2">
+                                                <p class="fst-italic mb-1">{{ example.text }}</p>
+                                                {% if example.translation %}
+                                                    <small class="text-muted">{{ example.translation }}</small>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    
+    {% else %}
+        <div class="alert alert-info shadow-sm">
+            <i class="fas fa-info-circle me-2"></i>
+            {% if request.GET.search or request.GET.category %}
+                No words found matching your criteria. Try adjusting your search or filters.
+            {% else %}
+                No vocabulary terms are available yet.
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Category Description Section -->
+    {% if request.GET.category and category_description %}
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">About {{ request.GET.category|title }}</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ category_description }}</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Information about vocabulary learning -->
+    <div class="card mt-5 bg-light">
+        <div class="card-body">
+            <h5>Tips for Learning New Vocabulary</h5>
+            <div class="row mt-3">
+                <div class="col-md-4 mb-3">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-book fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6>Context is Key</h6>
+                            <p class="small">Learning words in context helps with retention and proper usage.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-sync-alt fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6>Regular Review</h6>
+                            <p class="small">Revisit terms frequently to move them into long-term memory.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-pen fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6>Use It Actively</h6>
+                            <p class="small">Try to incorporate new words in your writing and conversations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
