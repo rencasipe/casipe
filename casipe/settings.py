@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'temario.apps.TemarioConfig',
     'apps.apps.AppsConfig',
     'readers.apps.ReadersConfig',
+    'phrases.apps.PhrasesConfig',
 ]
 
 MIDDLEWARE = [

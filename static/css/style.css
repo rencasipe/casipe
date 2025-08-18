@@ -834,3 +834,49 @@ footer {
     .reader-content p {
         margin-bottom: 1.2rem;
     }
+    
+    
+    /*100 food*/
+    .list-group-item {
+            border-left: 0;
+            border-right: 0;
+            padding-left: 0;
+        }
+        .list-group-item:first-child {
+            border-top: 0;
+        }
+        .card-body .list-group-flush {
+            margin-top: 1rem;
+        }
+        .food-item-card .card-text strong {
+            display: block;
+            margin-top: 0.5rem;
+            color: #555;
+        }
+        
+        
+        
+        /*top 100 verbs*/
+         .list-group-item {
+            border-left: 0;
+            border-right: 0;
+            padding-left: 0;
+        }
+        .list-group-item:first-child {
+            border-top: 0;
+        }
+        .card-body .list-group-flush {
+            margin-top: 1rem;
+        }
+        .verb-item-card .card-text strong {
+            display: block;
+            margin-top: 0.5rem;
+            color: #555;
+        }
+        .verb-item-card .card-text ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .verb-item-card .card-text ul li {
+            margin-bottom: 5px;
+        }
