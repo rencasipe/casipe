@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block title %}{{ post.title }} | Casipe.net{% endblock %}
+{% block meta %}<meta name="description" content="{{ post.meta_description|default:post.title }}">{% endblock meta %}
 
 {% block content %}
 <div class="container">
@@ -11,7 +12,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-custom">
           <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog Archive</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog</a></li>
           <li class="breadcrumb-item active" aria-current="page">{{ post.title|truncatechars:40 }}
           </li>
         </ol>

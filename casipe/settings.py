@@ -44,7 +44,21 @@ INSTALLED_APPS = [
     'apps.apps.AppsConfig',
     'readers.apps.ReadersConfig',
     'phrases.apps.PhrasesConfig',
+    'django_ckeditor_5',
 ]
+
+
+# Configure CKEditor 5
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
+        'contentsCss': '/static/css/ckeditor5.css',
+    },
+}
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

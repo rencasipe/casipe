@@ -7,8 +7,11 @@ urlpatterns = [
     # Django admin
     path("admin/", admin.site.urls),
     
+    # Ckeditor 5    
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
+    
     # User management
-    path("accounts/", include("django.contrib.auth.urls")),
+    #path("accounts/", include("django.contrib.auth.urls")),
     
     # Local apps
     path("", include("pages.urls")),
