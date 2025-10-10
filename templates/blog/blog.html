@@ -27,6 +27,22 @@
                         </button> 
                     </div> 
                 </form> 
+                
+                <!-- Sort Buttons -->
+                <div class="row mb-4 mt-4">
+                    <div class="col-12 text-center">
+                        <div class="sort-buttons">
+                            <a href="?sort=newest{% if search_query %}&q={{ search_query }}{% endif %}" 
+                               class="btn btn-category {% if request.GET.sort == 'newest' or not request.GET.sort %}active{% endif %}">
+                                <i class="fas fa-arrow-down"></i> Newest First
+                            </a>
+                            <a href="?sort=oldest{% if search_query %}&q={{ search_query }}{% endif %}" 
+                               class="btn btn-category {% if request.GET.sort == 'oldest' %}active{% endif %}">
+                                <i class="fas fa-arrow-up"></i> Oldest First
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div> 
         </div>
 
@@ -98,7 +114,7 @@
                     <ul class="pagination justify-content-center">
                         {% if posts.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ posts.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Previous">
+                            <a class="page-link" href="?page={{ posts.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" aria-label="Previous">
                                 <i class="fas fa-chevron-left"></i>
                             </a>
                         </li>
@@ -112,13 +128,15 @@
                         {% if posts.number == i %}
                         <li class="page-item active"><span class="page-link">{{ i }}</span></li>
                         {% elif i > posts.number|add:'-3' and i < posts.number|add:'3' %}
-                        <li class="page-item"><a class="page-link" href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}">{{ i }}</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{{ i }}</a>
+                        </li>
                         {% endif %}
                         {% endfor %}
 
                         {% if posts.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ posts.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Next">
+                            <a class="page-link" href="?page={{ posts.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" aria-label="Next">
                                 <i class="fas fa-chevron-right"></i>
                             </a>
                         </li>
@@ -308,15 +326,28 @@
     transition: all 0.3s ease; 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); 
     border: 1px solid rgba(0, 0, 0, 0.05); 
+    text-decoration: none;
+    display: inline-block;
 } 
 
 .btn-category:hover { 
     background-color: var(--primary-color); 
     color: white; 
     transform: translateY(-3px); 
+    text-decoration: none;
 } 
 
-.category-buttons { 
+.btn-category.active {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-category i {
+    margin-right: 5px;
+}
+
+.sort-buttons { 
     display: flex; 
     flex-wrap: wrap; 
     justify-content: center; 
@@ -409,6 +440,11 @@
     
     .subscribe-text {
         font-size: 0.9rem;
+    }
+    
+    .btn-category {
+        font-size: 0.85rem;
+        padding: 6px 12px;
     }
 }
 </style>
