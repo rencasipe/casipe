@@ -40,9 +40,23 @@ def blog(request):
         # If page is out of range, deliver last page of results
         posts = paginator.page(paginator.num_pages)
     
+    #context = {
+    #    "posts": posts,
+    #}
+    # In your view
     context = {
-        "posts": posts,
-    }
+        'posts': posts,  # Your paginated posts
+        #'search_query': search_query,
+        'available_years': [2025],  # Actual years from your posts
+        'available_months': [
+            (1, 'January'), (2, 'February'), (3, 'March'), 
+            (4, 'April'), (5, 'May'), (6, 'June'),
+            (7, 'July'), (8, 'August'), (9, 'September'),
+            (10, 'October'), (11, 'November'), (12, 'December')
+        ],
+    }    
+    
+    
     return render(request, "blog/blog.html", context)
 
 
