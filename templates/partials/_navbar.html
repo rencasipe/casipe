@@ -1,27 +1,31 @@
-<nav class="navbar navbar-expand-lg navbar-light">
-  <div class="container">
-    <a class="navbar-brand" href="{% url 'home' %}">Casipe.net</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if '/about/' in request.path %}active{% endif %}" href="{% url 'about' %}">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if '/blog/' in request.path %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if '/apps/' in request.path %}active{% endif %}" href="{% url 'apps' %}">Apps</a>
-            </li>
-            <!--<li class="nav-item">-->
-               <!--<a class="nav-link {% if '/contact/' in request.path %}active{% endif %}" href="{% url 'contact' %}">Contact</a>-->
-            <!--</li>-->
-        </ul>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <span class="brand-text">Casipe</span><span class="brand-dot">.</span><span class="brand-net">net</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/blog/' in request.path %}active{% endif %}" href="{% url 'blog' %}">
+                        <i class="fas fa-book-open me-1"></i>Blog
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/about/' in request.path %}active{% endif %}" href="{% url 'about' %}">
+                        <i class="fas fa-user me-1"></i>About
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>

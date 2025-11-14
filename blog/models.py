@@ -13,8 +13,6 @@ class Post(models.Model):
     is_published = models.BooleanField(default=False)
     published_date = models.DateTimeField(blank=True, null=True)
     reviewed = models.BooleanField(default=False)
-    # A new field to store notes about the review process.
-    # This can be used by an editor or admin to leave feedback.
     review_notes = models.TextField(blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -31,3 +29,21 @@ class Post(models.Model):
         if self.is_published and not self.published_date:
             self.published_date = timezone.now()
         super().save(*args, **kwargs)
+    
+    @property
+    def is_scheduled(self):
+        """
+        Returns True if the post is marked as published but has a future published_date.
+        """
+        if self.is_published and self.published_date:
+            return self.published_date > timezone.now()
+        return False
+    
+    @property
+    def is_live(self):
+        """
+        Returns True if the post is published and the published_date has passed.
+        """
+        if self.is_published and self.published_date:
+            return self.published_date <= timezone.now()
+        return False

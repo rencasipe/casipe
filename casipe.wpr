@@ -6,7 +6,7 @@
 [project attributes]
 console.toolbox = [{'autosave': False,
                     'entry_point': 'Collect Static Files',
-                    'id': 'cmd-tEmgteNldGGsApEP',
+                    'id': 'cmd-22xtORaErdvfvMFq',
                     'io_encoding': None,
                     'key_binding': None,
                     'line_mode': True,
@@ -15,7 +15,7 @@ console.toolbox = [{'autosave': False,
                     'shared': False,
                     'title': 'Collect Static Files'}]
 debug.launch-configs = (2,
-                        {'launch-I7oEC4697m50LWRF': ({},
+                        {'launch-gC4YtY9TIsL24hgI': ({},
         {'buildcmd': ('project',
                       ('',
                        '')),
@@ -49,7 +49,7 @@ proj.file-type = 'shared'
 proj.home-dir = loc('.')
 proj.launch-config = {loc('manage.py'): ('custom',
         ('',
-         'launch-I7oEC4697m50LWRF'))}
+         'launch-gC4YtY9TIsL24hgI'))}
 proj.main-file = loc('manage.py')
 proj.ptype = 'django'
 testing.test-framework = {None: ':internal djangotest',

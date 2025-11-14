@@ -1,21 +1,19 @@
 {% extends 'base.html' %} 
 {% load static %} 
 {% block meta %}
-        <meta name="description" content="Join Renato Casipe on his personal journey to Spanish fluency. Discover practical tips, effective resources, and real-world struggles to help you learn Spanish faster." />
-
+        <meta name="description" content="Join Renato Casipe on his personal journey to Spanish fluency. Discover practical tips, effective resources, and real-world struggles to help you learn Spanish faster through immersion." />
 {% endblock meta %}
 {% block title %}Learn Spanish with Renato Casipe | Fluency Journey & Resources{% endblock title%} 
 {% block content %}
-
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="container text-center hero-content">
         <div class="emoji">🇪🇸 ✨</div>
-        <h1 class="display-4 hero-title">Let's Learn Spanish Together!</h1>
+        <h1 class="display-4 hero-title">Fluency, Not Fiction.</h1>
         <div class="spanish-flag-colors"></div>
-        <p class="hero-text">Join me on my journey to Spanish fluency. I'm sharing all my tips, struggles, and favorite resources as I navigate the beautiful world of Spanish language learning.</p>
+        <p class="hero-text">My method skips the gamified apps. My Spanish is built by listening to the radio, getting lost in films, diving into books, and finding my voice in conversation. This is immersion. This is how a language is truly learned.</p>
         <div class="hero-buttons">
-            <a href="{% url 'blog' %}" class="btn btn-hero-primary btn-lg me-3 mb-3 mb-md-0">
+            <a href="{% url 'blog' %}" class="btn btn-hero-primary btn-lg me-md-3 mb-3 mb-md-0">
                 <i class="fas fa-book-open me-2"></i>Latest Posts
             </a>
             <a href="{% url 'apps' %}" class="btn btn-hero-secondary btn-lg">
@@ -25,11 +23,8 @@
     </div>
 </section>
 
-
-
-
 {% if messages %}
-<div class="container mt-3">
+<div class="container mt-4">
     {% for message in messages %}
     <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
         {{ message }}
@@ -44,6 +39,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('newsletter-form');
+        if (!form) return;
+        
         const errorDiv = document.getElementById('newsletter-error');
         const successDiv = document.getElementById('subscription-success');
         const successMessage = document.getElementById('success-message');
