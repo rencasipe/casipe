@@ -24,28 +24,18 @@
     <!-- Article Content -->
       <div class="col-lg-10 mx-auto">
         <article class="blog-content">
-          <h1 class="article-title mb-4" style="font-size: 2.5rem; font-weight: 700; color: #333; border-bottom: 3px solid var(--primary-color); padding-bottom: 0.5rem;">{{ post.title}}</h1>
-
-          <div class="article-meta mb-4">
-              <div class="author-info" style="display: flex; align-items: center;">
-                  <div class="author-details">
-                      <p class="mb-0" style="font-size: 0.9rem; font-weight: 500;">Written by</p>
-                      <p class="mb-0" style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color);">{{ post.author}}</p>
-                  </div>
-              </div>
-              
-              <div class="post-dates mt-3">
-                  <div class="date-info">
-                      <span class="date-label"><i class="fas fa-calendar-check me-2"></i>Published:</span>
-                      <span class="date-value">{{ post.published_date|date:"F d, Y" }}</span>
-                  </div>
-                  <div class="date-info mt-1">
-                      <span class="date-label"><i class="fas fa-edit me-2"></i>Last Updated:</span>
-                      <span class="date-value">{{ post.updated_at|date:"F d, Y" }}</span>
-                  </div>
-              </div>
-          </div>
+           <div class="row mb-4">
+            <div class="col-lg-10 mx-auto text-center">
+                <h1 class="display-4 hero-title mb-3" style="color: var(--spain-red); font-weight: 800;">
+                {{ post.title}}
+                </h1>
                 
+                <div class="spanish-flag-colors mx-auto mb-4"></div>
+                 <p class="hero-text">
+                 {{ post.subtitle }}
+                 </p>
+            </div>
+        </div>                
           <div class="post-content">
               {{ post.content|safe }}
           </div>

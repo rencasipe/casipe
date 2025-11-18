@@ -108,7 +108,18 @@ def post_page(request, slug):
         published_date__lte=timezone.now(), 
         is_published=True
     )
+
+    # Process content here in the view
+    processed_content = post.content
+    processed_content = processed_content.replace('{{ title }}', post.title)
+    processed_content = processed_content.replace('{{ slug }}', post.slug)
+    processed_content = processed_content.replace('{{ author }}', str(post.author))
+    if post.published_date:
+        processed_content = processed_content.replace('{{ published_date }}', post.published_date.strftime('%B %d, %Y'))
+    
     context = {
-        "post": post,     
+        "post": post,
+        "processed_content": processed_content,
     }
+    
     return render(request, "blog/post.html", context)

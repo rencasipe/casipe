@@ -4,18 +4,22 @@ from django.utils.html import format_html
 from .models import Post
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'reviewed', 'publication_status', 'published_date', 'created_at', 'updated_at')
+    list_display = ('title', 'subtitle', 'author', 'reviewed', 'publication_status', 'has_audio_display', 'published_date', 'created_at', 'updated_at')
     list_filter = ('is_published', 'reviewed', 'created_at', 'updated_at')
-    search_fields = ('title', 'content', 'review_notes', 'meta_description')
+    search_fields = ('title', 'subtitle', 'content', 'review_notes', 'meta_description')
     prepopulated_fields = {'slug': ('title',)}
     date_hierarchy = 'created_at'
     ordering = ('-created_at', '-updated_at')
-    readonly_fields = ('created_at', 'updated_at', 'publication_status_detail')
+    readonly_fields = ('created_at', 'updated_at', 'publication_status_detail', 'audio_preview', 'has_audio_display')
     actions = ['unpublish_posts', 'publish_posts_now', 'mark_as_reviewed', 'mark_as_unreviewed']
     
     fieldsets = (
         ('Post Information', {
-            'fields': ('title', 'slug', 'content', 'meta_description', 'image', 'author')
+            'fields': ('title', 'subtitle', 'slug', 'content', 'meta_description', 'image', 'author')
+        }),
+        ('Audio Content', {
+            'fields': ('audio_file', 'audio_duration', 'audio_preview', 'has_audio_display'),
+            'description': 'Add audio content to your post. Supported formats: MP3, WAV, OGG, M4A, etc.'
         }),
         ('Review & Publication Settings', {
             'fields': ('is_published', 'published_date', 'publication_status_detail', 'reviewed', 'review_notes'),
@@ -41,6 +45,48 @@ class PostAdmin(admin.ModelAdmin):
         return format_html('<span style="color: #999;">Unknown</span>')
     
     publication_status.short_description = 'Status'
+    
+    def has_audio_display(self, obj):
+        """
+        Display audio status with icon in list view and form.
+        """
+        if obj.has_audio:
+            return format_html(
+                '<span style="color: #28a745; font-weight: bold;">🎵 Yes</span>'
+            )
+        return format_html('<span style="color: #999;">❌ No</span>')
+    
+    has_audio_display.short_description = 'Has Audio'
+    
+    def audio_preview(self, obj):
+        """
+        Display audio player preview in the admin form.
+        """
+        if obj.audio_file:
+            return format_html(
+                '''
+                <div style="margin-top: 10px;">
+                    <audio controls style="width: 100%; max-width: 400px;">
+                        <source src="{}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div style="margin-top: 5px;">
+                        <small><strong>File:</strong> {}</small><br>
+                        <small><strong>Size:</strong> {:.1f} MB</small>
+                        {}
+                    </div>
+                </div>
+                ''',
+                obj.audio_file.url,
+                obj.audio_file.name.split('/')[-1],  # Just show filename
+                obj.audio_file.size / (1024 * 1024),  # Convert to MB
+                f'<br><small><strong>Duration:</strong> {obj.audio_duration_formatted}</small>' if obj.audio_duration else ''
+            )
+        return format_html(
+            '<span style="color: #999; font-style: italic;">No audio file uploaded</span>'
+        )
+    
+    audio_preview.short_description = 'Audio Preview'
     
     def publication_status_detail(self, obj):
         """
