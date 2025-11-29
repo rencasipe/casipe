@@ -50,7 +50,7 @@
                             <a href="{% url 'post_page' post.slug %}">{{ post.title }}</a>
                         </h3>
                         <p class="card-text">
-                            {{ post.content|striptags|truncatechars:120 }}
+                            {{ post.excerpt }}
                         </p>
                         
                         <div class="card-meta">

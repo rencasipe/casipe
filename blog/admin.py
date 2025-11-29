@@ -4,9 +4,9 @@ from django.utils.html import format_html
 from .models import Post
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subtitle', 'author', 'reviewed', 'publication_status', 'has_audio_display', 'published_date', 'created_at', 'updated_at')
+    list_display = ('title', 'excerpt_preview', 'author', 'reviewed', 'publication_status', 'has_audio_display', 'published_date', 'created_at', 'updated_at')
     list_filter = ('is_published', 'reviewed', 'created_at', 'updated_at')
-    search_fields = ('title', 'subtitle', 'content', 'review_notes', 'meta_description')
+    search_fields = ('title', 'subtitle', 'excerpt', 'content', 'review_notes', 'meta_description')
     prepopulated_fields = {'slug': ('title',)}
     date_hierarchy = 'created_at'
     ordering = ('-created_at', '-updated_at')
@@ -15,7 +15,7 @@ class PostAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Post Information', {
-            'fields': ('title', 'subtitle', 'slug', 'content', 'meta_description', 'image', 'author')
+            'fields': ('title', 'subtitle', 'slug', 'excerpt', 'content', 'meta_description', 'image', 'author')
         }),
         ('Audio Content', {
             'fields': ('audio_file', 'audio_duration', 'audio_preview', 'has_audio_display'),
@@ -31,6 +31,17 @@ class PostAdmin(admin.ModelAdmin):
             'fields': ('created_at', 'updated_at')
         })
     )
+    
+    def excerpt_preview(self, obj):
+        """
+        Display a truncated excerpt in the list view.
+        """
+        if obj.excerpt:
+            if len(obj.excerpt) > 75:
+                return f"{obj.excerpt[:75]}..."
+            return obj.excerpt
+        return format_html('<span style="color: #999; font-style: italic;">No excerpt</span>')
+    excerpt_preview.short_description = 'Excerpt'
     
     def publication_status(self, obj):
         """

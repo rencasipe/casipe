@@ -8,6 +8,11 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=250, blank=True, help_text="Optional subtitle or tagline")
     slug = models.SlugField(unique=True)
+    excerpt = models.TextField(
+            max_length=500, 
+            blank=True, 
+            help_text="Brief summary or teaser of the post (max 500 characters)"
+        )    
     content = models.TextField()
     meta_description = models.CharField(max_length=160, blank=True)
     image = models.ImageField(upload_to="blog/images/", blank=True, null=True)
