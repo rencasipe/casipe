@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load blog_extras %}
 {% load static %}
 
 {% block title %}{{ post.title }} | Casipe.net{% endblock %}
@@ -13,8 +14,7 @@
         <ol class="breadcrumb breadcrumb-custom">
           <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
           <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ post.title|truncatechars:40 }}
-          </li>
+          <li class="breadcrumb-item active" aria-current="page">{{ post.title|truncatechars:40 }}</li>
         </ol>
       </nav>
     </div> 
@@ -22,29 +22,49 @@
     
   <div class="row">
     <!-- Article Content -->
-      <div class="col-lg-10 mx-auto">
-        <article class="blog-content">
-           <div class="row mb-4">
-            <div class="col-lg-10 mx-auto text-center">
-                <h1 class="display-4 hero-title mb-3" style="color: var(--spain-red); font-weight: 800;">
-                {{ post.title}}
-                </h1>
-                
-                <div class="spanish-flag-colors mx-auto mb-4"></div>
-                 <p class="hero-text">
-                 {{ post.subtitle }}
-                 </p>
-            </div>
-        </div>                
-          <div class="post-content">
-              {{ post.content|safe }}
-          </div>
-      </article>
+    <div class="col-lg-10 mx-auto">
+      <article class="blog-content">
+        <div class="row mb-4">
+          <div class="col-lg-10 mx-auto text-center">
+            <h1 class="display-4 hero-title mb-3" style="color: var(--spain-red); font-weight: 800;">
+              {{ post.title }}
+            </h1>
             
+            <div class="spanish-flag-colors mx-auto mb-4"></div>
+            
+            <!-- SIMPLE PUBLISHED DATE -->
+            <div class="post-date mb-3">
+              <span class="text-muted">
+                <i class="far fa-calendar-alt me-1"></i>
+                <time datetime="{{ post.published_date|date:'Y-m-d' }}">
+                  {{ post.published_date|date:"F j, Y" }}
+                </time>
+              </span>
+            </div>
+            
+            <p class="hero-text">
+              {{ post.subtitle }}
+            </p>
+          </div>
+        </div>
+        
+        <div class="post-content">
+          {{ post.content|process_media|safe }}
+        </div>
+        
+        <!-- Optional: Add date at bottom too -->
+        <div class="text-muted small mt-5 pt-4 border-top text-center">
+          <i class="far fa-clock me-1"></i> Published on 
+          <time datetime="{{ post.published_date|date:'Y-m-d' }}">
+            {{ post.published_date|date:"F j, Y" }}
+          </time>
+        </div>
+      </article>
+      
       <div class="back-button-container mt-4 mb-4">
-          <a href="{% url 'blog' %}" class="btn btn-submit back-btn">
-              <i class="fas fa-arrow-left me-2"></i> Back to Blog Archive
-          </a>
+        <a href="{% url 'blog' %}" class="btn btn-submit back-btn">
+          <i class="fas fa-arrow-left me-2"></i> Back to Blog Archive
+        </a>
       </div>
     </div>
   </div>
@@ -83,46 +103,10 @@
         color: var(--monokai-text);
     }
     
-    /* Post Meta Section */
-    .article-meta {
-        background-color: #f8f9fa;
-        padding: 1.25rem;
-        border-radius: 10px;
-        border-left: 4px solid var(--primary-color);
-    }
-    
-    .post-dates {
-        margin-top: 15px;
+    /* Simple Post Date Styling */
+    .post-date {
         font-size: 0.95rem;
-    }
-    
-    .date-info {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .date-label {
         color: #666;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        min-width: 110px;
-    }
-    
-    .date-value {
-        color: #333;
-        font-weight: 600;
-    }
-    
-    /* Post Footer Section */
-    .post-footer {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .back-button-container {
-        text-align: left;
     }
     
     /* Back button specific styling */
@@ -137,35 +121,6 @@
         .back-button-container {
             text-align: center;
         }
-        
-        .article-meta {
-            padding: 1rem;
-        }
-        
-        .date-info {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 3px;
-        }
-        
-        .date-label {
-            min-width: auto;
-            margin-right: 5px;
-        }
-    }
-    
-    /* Author Section */
-    .author-section {
-        margin-bottom: 1.5rem;
-    }
-    
-    .author-avatar {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--monokai-green);
-        color: var(--monokai-dark);
-        border-radius: 50%;
     }
 </style>
 {% endblock content %}

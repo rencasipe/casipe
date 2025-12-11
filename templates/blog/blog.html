@@ -71,12 +71,7 @@
                                     <i class="fas fa-calendar-plus"></i>
                                     <span>{{ post.published_date|date:"M d, Y" }}</span>
                                 </div>
-                                {% if post.updated_at and post.updated_at != post.published_date %}
-                                <div class="meta-date">
-                                    <i class="fas fa-sync-alt"></i>
-                                    <span>{{ post.updated_at|date:"M d, Y" }}</span>
-                                </div>
-                                {% endif %}
+                                
                             </div>
                         </div>
                         
